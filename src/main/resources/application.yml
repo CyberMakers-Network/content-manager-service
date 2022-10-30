@@ -37,3 +37,11 @@ info:
   organization: "Cyber Makers Network"
   java-version: ${java.version}
   java-vendor: ${java-vendor}
+
+### SWAGGER
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /docs
+    operationsSorter: method
