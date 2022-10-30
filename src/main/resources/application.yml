@@ -25,5 +25,16 @@ management:
       show-details: always
   endpoints:
     web:
+      base-path: /
       exposure:
-        include: '*'
+        include: health, info
+
+### INFO ENDPOINT CONFIG
+
+info:
+  app:
+    name: "content-manager-service"
+    description: "Content manager service powered by Cyber Makers Network community"
+  organization: "Cyber Makers Network"
+  java-version: ${java.version}
+  java-vendor: ${java-vendor}
