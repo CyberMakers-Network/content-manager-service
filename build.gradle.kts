@@ -70,6 +70,7 @@ dependencies {
     // Web
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.12")
 
     // Database
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
