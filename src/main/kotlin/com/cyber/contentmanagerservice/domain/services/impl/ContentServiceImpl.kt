@@ -1,6 +1,8 @@
 package com.cyber.contentmanagerservice.domain.services.impl
 
+import com.cyber.contentmanagerservice.application.payloads.request.ContentRequest
 import com.cyber.contentmanagerservice.domain.entities.Content
+import com.cyber.contentmanagerservice.domain.exceptions.ContentHasBeenRegisteredException
 import com.cyber.contentmanagerservice.domain.exceptions.ContentNotFoundException
 import com.cyber.contentmanagerservice.domain.repositories.ContentRepository
 import com.cyber.contentmanagerservice.domain.services.ContentService
@@ -12,6 +14,18 @@ import org.springframework.stereotype.Service
 class ContentServiceImpl(
     private val contentRepository: ContentRepository
 ) : ContentService {
+    override fun register(newContent: ContentRequest): Content {
+        contentRepository.findByTitle(newContent.title).ifPresent {
+            logger.error("Content title has been registered")
+            throw ContentHasBeenRegisteredException()
+        }
+
+        return contentRepository.save(
+            Content(
+                newContent
+            )
+        ).also { logger.info("New content title=${it.title} registered!") }
+    }
 
     override fun findByTitle(title: String): Content? {
         logger.info("Finding content with title=$title")
