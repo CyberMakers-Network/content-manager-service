@@ -22,8 +22,8 @@ jacoco {
 }
 
 val excludePackages: Iterable<String> = listOf(
-    "**/com/cybermakers/contentmanagerservice/application/config/**",
-    "**/com/cybermakers/contentmanagerservice/domain/entities/**"
+    "**/com/cyber/contentmanagerservice/application/config/**",
+    "**/com/cyber/contentmanagerservice/domain/entities/**"
 )
 
 extra["excludePackages"] = excludePackages
