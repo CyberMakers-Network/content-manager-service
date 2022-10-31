@@ -10,7 +10,7 @@ plugins {
 
 group = "com.cyber"
 version = "0.0.1"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
@@ -77,15 +77,15 @@ dependencies {
 
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testImplementation("com.ninja-squad:springmockk:3.1.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
 }
 
