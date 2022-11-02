@@ -9,5 +9,6 @@ data class ContentRequest(
     val description: String,
     val datetime: LocalDateTime? = LocalDateTime.now(),
     val url: String,
-    val type: Type
+    val type: Type,
+    val authorEmail: String
 )

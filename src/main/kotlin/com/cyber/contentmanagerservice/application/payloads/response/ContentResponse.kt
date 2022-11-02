@@ -10,7 +10,8 @@ data class ContentResponse(
     val description: String,
     val dateTime: LocalDateTime?,
     val url: String,
-    val type: Type
+    val type: Type,
+    val authorEmail: String
 ) {
     constructor(content: Content) : this(
         title = content.title,
@@ -18,6 +19,7 @@ data class ContentResponse(
         description = content.description,
         dateTime = content.datetime,
         url = content.url,
-        type = content.type
+        type = content.type,
+        authorEmail = content.authorEmail
     )
 }
