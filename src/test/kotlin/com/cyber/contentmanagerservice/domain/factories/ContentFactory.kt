@@ -11,6 +11,7 @@ object ContentFactory {
         description = "Description",
         datetime = LocalDateTime.now(),
         url = "teste.com",
-        type = Type.ARTICLE
+        type = Type.ARTICLE,
+        authorEmail = "teste@teste.com"
     )
 }

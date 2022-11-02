@@ -2,8 +2,10 @@ package com.cyber.contentmanagerservice.domain.services
 
 import com.cyber.contentmanagerservice.domain.exceptions.ContentHasBeenRegisteredException
 import com.cyber.contentmanagerservice.domain.exceptions.ContentNotFoundException
+import com.cyber.contentmanagerservice.domain.factories.AuthorFactory
 import com.cyber.contentmanagerservice.domain.factories.ContentFactory
 import com.cyber.contentmanagerservice.domain.factories.ContentRequestFactory
+import com.cyber.contentmanagerservice.domain.repositories.AuthorRepository
 import com.cyber.contentmanagerservice.domain.repositories.ContentRepository
 import com.cyber.contentmanagerservice.domain.services.impl.ContentServiceImpl
 import io.mockk.clearAllMocks
@@ -19,9 +21,13 @@ import java.util.*
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class ContentServiceTest {
 
-    private val repository = mockk<ContentRepository>()
+    private val contentRepository = mockk<ContentRepository>()
+    private val authorRepository = mockk<AuthorRepository>()
 
-    private val service = ContentServiceImpl(repository)
+    private val service = ContentServiceImpl(
+        contentRepository = contentRepository,
+        authorRepository = authorRepository
+    )
 
     @BeforeEach
     fun init() {
@@ -34,7 +40,7 @@ class ContentServiceTest {
         val mockContentRequest = ContentRequestFactory.sample()
 
         every {
-            repository.findByTitle(any())
+            contentRepository.findByTitle(any())
         } returns Optional.of(mockContent)
 
         assertThrows<ContentHasBeenRegisteredException> {
@@ -46,27 +52,33 @@ class ContentServiceTest {
     fun `it should be register a new content`() {
         val mockContent = ContentFactory.sample()
         val mockContentRequest = ContentRequestFactory.sample()
+        val mockAuthor = AuthorFactory.sample()
 
         every {
-            repository.findByTitle(any())
+            contentRepository.findByTitle(any())
         } returns Optional.empty()
 
         every {
-            repository.save(any())
+            authorRepository.findAuthorByEmail(any())
+        } returns Optional.of(mockAuthor)
+
+        every {
+            contentRepository.save(any())
         } returns mockContent
 
         service.register(mockContentRequest)
 
         verify(exactly = 1) {
-            repository.findByTitle(any())
-            repository.save(any())
+            contentRepository.findByTitle(any())
+            contentRepository.save(any())
+            authorRepository.findAuthorByEmail(any())
         }
     }
 
     @Test
     fun `it should throw content not found exception`() {
         every {
-            repository.findByTitle(any())
+            contentRepository.findByTitle(any())
         } returns Optional.empty()
 
         assertThrows<ContentNotFoundException> {
@@ -79,13 +91,13 @@ class ContentServiceTest {
         val mockContent = ContentFactory.sample()
 
         every {
-            repository.findByTitle(any())
+            contentRepository.findByTitle(any())
         } returns Optional.of(mockContent)
 
         service.findByTitle("test")
 
         verify(exactly = 1) {
-            repository.findByTitle(any())
+            contentRepository.findByTitle(any())
         }
     }
 }

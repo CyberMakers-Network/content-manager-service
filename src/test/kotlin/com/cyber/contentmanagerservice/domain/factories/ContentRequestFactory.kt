@@ -11,6 +11,7 @@ object ContentRequestFactory {
         description = "description",
         datetime = LocalDateTime.now(),
         url = "test.com",
-        type = Type.ARTICLE
+        type = Type.ARTICLE,
+        authorEmail = "teste@teste.com"
     )
 }
