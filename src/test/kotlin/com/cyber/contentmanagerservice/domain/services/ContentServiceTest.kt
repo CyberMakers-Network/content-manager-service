@@ -1,5 +1,6 @@
 package com.cyber.contentmanagerservice.domain.services
 
+import com.cyber.contentmanagerservice.domain.exceptions.AuthorNotFoundException
 import com.cyber.contentmanagerservice.domain.exceptions.ContentHasBeenRegisteredException
 import com.cyber.contentmanagerservice.domain.exceptions.ContentNotFoundException
 import com.cyber.contentmanagerservice.domain.factories.AuthorFactory
@@ -98,6 +99,23 @@ class ContentServiceTest {
 
         verify(exactly = 1) {
             contentRepository.findByTitle(any())
+        }
+    }
+
+    @Test
+    fun `it should throw author not found exception`() {
+        val mockContentRequest = ContentRequestFactory.sample()
+
+        every {
+            contentRepository.findByTitle(any())
+        } returns Optional.empty()
+
+        every {
+            authorRepository.findAuthorByEmail(any())
+        } returns Optional.empty()
+
+        assertThrows<AuthorNotFoundException> {
+            service.register(mockContentRequest)
         }
     }
 }
