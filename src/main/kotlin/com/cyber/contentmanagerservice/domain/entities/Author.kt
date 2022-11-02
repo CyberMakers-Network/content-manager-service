@@ -1,5 +1,6 @@
 package com.cyber.contentmanagerservice.domain.entities
 
+import com.cyber.contentmanagerservice.application.payloads.request.AuthorRequest
 import org.bson.types.ObjectId
 
 data class Author(
@@ -8,4 +9,11 @@ data class Author(
     val surname: String,
     val email: String,
     val nickname: String
-)
+) {
+    constructor(authorRequest: AuthorRequest) : this(
+        name = authorRequest.name,
+        surname = authorRequest.surname,
+        email = authorRequest.email,
+        nickname = authorRequest.nickname
+    )
+}
