@@ -2,6 +2,7 @@ package com.cyber.contentmanagerservice.application.web.controllers
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.cyber.contentmanagerservice.domain.exceptions.ContentNotFoundException
 import com.cyber.contentmanagerservice.domain.factories.ContentFactory
 import com.cyber.contentmanagerservice.domain.factories.ContentRequestFactory
 import com.cyber.contentmanagerservice.domain.services.ContentService
@@ -11,6 +12,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.http.HttpStatus
 
 class ContentControllerTest {
@@ -75,5 +77,16 @@ class ContentControllerTest {
         assertThat(result.body!!.authorEmail).isEqualTo(mockContent.authorEmail)
         assertThat(result.body!!.type).isEqualTo(mockContent.type)
         assertThat(result.body!!.url).isEqualTo(mockContent.url)
+    }
+
+    @Test
+    fun `it should throw content not found exception`() {
+        every {
+            contentService.findByTitle(any())
+        } throws ContentNotFoundException()
+
+        assertThrows<ContentNotFoundException> {
+            controller.getContentByTitle("test")
+        }
     }
 }
