@@ -51,4 +51,29 @@ class ContentControllerTest {
         assertThat(result.body!!.type).isEqualTo(mockContent.type)
         assertThat(result.body!!.url).isEqualTo(mockContent.url)
     }
+
+    @Test
+    fun `it should be return a content by title`() {
+        val mockContent = ContentFactory.sample()
+
+        every {
+            contentService.findByTitle(any())
+        } returns mockContent
+
+        val result = controller.getContentByTitle("test")
+
+        verify(exactly = 1) {
+            contentService.findByTitle(any())
+        }
+
+        assertThat(result.statusCode).isEqualTo(HttpStatus.OK)
+
+        assertThat(result.body!!.title).isEqualTo(mockContent.title)
+        assertThat(result.body!!.subtitle).isEqualTo(mockContent.subtitle)
+        assertThat(result.body!!.description).isEqualTo(mockContent.description)
+        assertThat(result.body!!.dateTime).isEqualTo(mockContent.datetime)
+        assertThat(result.body!!.authorEmail).isEqualTo(mockContent.authorEmail)
+        assertThat(result.body!!.type).isEqualTo(mockContent.type)
+        assertThat(result.body!!.url).isEqualTo(mockContent.url)
+    }
 }
